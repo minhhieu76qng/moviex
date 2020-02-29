@@ -8,7 +8,7 @@ const NowPlayingStack = createStackNavigator();
 
 function NowPlayingStackScreen() {
   return (
-    <NowPlayingStack.Navigator>
+    <NowPlayingStack.Navigator headerMode="none">
       <NowPlayingStack.Screen
         name={ScreenName.NowPlaying}
         component={NowPlaying}

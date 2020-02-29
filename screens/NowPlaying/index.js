@@ -11,19 +11,28 @@ const NowPlaying = () => {
 
   return (
     <View style={styles.homeWrapper}>
-      {/* <SearchBar /> */}
-      <ListMovie
-        movies={movies}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      <SearchBar />
+      <View style={styles.list}>
+        <ListMovie
+          movies={movies}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   homeWrapper: {
+    position: 'relative',
     backgroundColor: '#3d3d3d',
+    flex: 1,
+    paddingHorizontal: 5,
+    paddingTop: 15,
+  },
+  list: {
+    marginTop: 20,
     flex: 1,
   },
 });

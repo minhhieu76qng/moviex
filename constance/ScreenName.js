@@ -1,6 +1,6 @@
 export default {
-  NowPlaying: 'NowPlaying',
-  TopRated: 'TopRated',
+  NowPlaying: 'Now playing',
+  TopRated: 'Top rated',
   Favorite: 'Favorite',
   Detail: 'Detail',
 };

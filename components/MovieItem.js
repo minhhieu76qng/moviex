@@ -1,32 +1,42 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text} from 'react-native';
+import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {BASE_IMG_URL} from 'react-native-dotenv';
+import ScreenName from '../constance/ScreenName';
 
 const MovieItem = ({movie}) => {
+  const navigation = useNavigation();
+
+  const gotoDetail = () => {
+    navigation.navigate(ScreenName.Detail, {movieId: movie.item.id});
+  };
+
   return (
-    <View style={styles.movieItem}>
-      <View style={styles.moviePoster}>
-        <Image
-          style={styles.movieThumbnail}
-          source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
-          resizeMode="cover"
-        />
+    <TouchableOpacity onPress={() => gotoDetail()}>
+      <View style={styles.movieItem}>
+        <View style={styles.moviePoster}>
+          <Image
+            style={styles.movieThumbnail}
+            source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
+            resizeMode="cover"
+          />
+        </View>
+        <View style={styles.movieContent}>
+          <Text style={[styles.textColor, styles.movieName]}>
+            {movie.item.title}
+          </Text>
+          <Text style={[styles.textColor, styles.releaseDate]}>
+            {movie.item.release_date}
+          </Text>
+          <Text
+            style={[styles.textColor, styles.movieDescription]}
+            ellipsizeMode="tail"
+            numberOfLines={3}>
+            {movie.item.overview}
+          </Text>
+        </View>
       </View>
-      <View style={styles.movieContent}>
-        <Text style={[styles.textColor, styles.movieName]}>
-          {movie.item.title}
-        </Text>
-        <Text style={[styles.textColor, styles.releaseDate]}>
-          {movie.item.release_date}
-        </Text>
-        <Text
-          style={[styles.textColor, styles.movieDescription]}
-          ellipsizeMode="tail"
-          numberOfLines={3}>
-          {movie.item.overview}
-        </Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -37,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     // minHeight: 150,
-    padding: 15,
+    // padding: 15,
     flexDirection: 'row',
   },
   moviePoster: {

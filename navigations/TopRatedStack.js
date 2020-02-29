@@ -8,7 +8,7 @@ const TopRatedStack = createStackNavigator();
 
 function TopRatedStackScreen() {
   return (
-    <TopRatedStack.Navigator>
+    <TopRatedStack.Navigator headerMode="none">
       <TopRatedStack.Screen name={ScreenName.TopRated} component={TopRated} />
       <TopRatedStack.Screen name={ScreenName.Detail} component={MovieDetail} />
     </TopRatedStack.Navigator>
