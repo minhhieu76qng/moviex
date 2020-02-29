@@ -1,8 +1,9 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import ListMovie from '../../components/ListMovie';
+import SearchBar from '../../components/SearchBar';
 
-const Home = () => {
+const NowPlaying = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   // const onRefresh = useCallback(() => {}, [refreshing]);
@@ -10,6 +11,7 @@ const Home = () => {
 
   return (
     <View style={styles.homeWrapper}>
+      {/* <SearchBar /> */}
       <ListMovie
         movies={movies}
         refreshing={refreshing}
@@ -148,4 +150,4 @@ const movies = [
   },
 ];
 
-export default Home;
+export default NowPlaying;
