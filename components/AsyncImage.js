@@ -1,22 +1,24 @@
 import React, {useState, useEffect} from 'react';
+import PropType from 'prop-types';
 import {View, Image, StyleSheet, Animated} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const AsyncImage = ({source, width}) => {
+const AsyncImage = ({source, placeholderSource, width}) => {
   const [loaded, setLoaded] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
 
-  const [imageOpacity, setImageOpacity] = useState(new Animated.Value(0.0));
+  const [imageOpacity, setImageOpacity] = useState(
+    placeholderSource ? new Animated.Value(1.0) : new Animated.Value(0.0),
+  );
   const [placeholderOpacity, setPlaceholderOpacity] = useState(
     new Animated.Value(1.0),
   );
   const [placeholderScale, setPlaceholderScale] = useState(
-    new Animated.Value(0.0),
+    new Animated.Value(1.0),
   );
 
   const onLoad = () => {
-    console.log('fetch');
     Animated.sequence([
       //
       // Implode
@@ -51,7 +53,7 @@ const AsyncImage = ({source, width}) => {
         ]),
         Animated.timing(imageOpacity, {
           toValue: 1.0,
-          delay: 200,
+          delay: 300,
           duration: 300,
           useNativeDriver: true,
         }),
@@ -69,7 +71,7 @@ const AsyncImage = ({source, width}) => {
         setImgHeight((width / w) * h);
       },
       err => {
-        console.log(err);
+        throw err;
       },
     );
   }, [source.uri, width]);
@@ -82,7 +84,14 @@ const AsyncImage = ({source, width}) => {
     height: imgHeight,
   };
 
-  const wrapperStyle = {
+  const phImageStyle = {
+    resizeMode: 'cover',
+    opacity: placeholderOpacity,
+    width: imgWidth,
+    height: imgHeight,
+  };
+
+  const placeholderStyle = {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -95,10 +104,19 @@ const AsyncImage = ({source, width}) => {
   return (
     <View style={styles.imageWrapper}>
       <Animated.Image style={imgStyle} source={source} onLoad={onLoad} />
-      {!loaded && (
-        <Animated.View style={wrapperStyle}>
-          <Icon style={styles.placeholder} name="film" color="#fff" />
+      {!placeholderSource && !loaded && (
+        <Animated.View style={placeholderStyle}>
+          <Icon style={styles.icon} name="film" color="#fff" />
+          {/* <ActivityIndicator size="large" /> */}
         </Animated.View>
+      )}
+
+      {placeholderSource && !loaded && (
+        <Animated.Image
+          blurRadius={20}
+          style={phImageStyle}
+          source={placeholderSource}
+        />
       )}
     </View>
   );
@@ -109,9 +127,15 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
   },
-  placeholder: {
+  icon: {
     fontSize: 80,
   },
 });
+
+AsyncImage.propTypes = {
+  width: PropType.number,
+  source: PropType.object,
+  placeholderSource: PropType.object,
+};
 
 export default AsyncImage;

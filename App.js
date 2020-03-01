@@ -7,6 +7,7 @@ import ScreenName from './constance/ScreenName';
 import NowPlayingStackScreen from './navigations/NowPlayingStack';
 import TopRatedStackScreen from './navigations/TopRatedStack';
 import FavoriteStackScreen from './navigations/FavoriteStack';
+import WebView from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
 

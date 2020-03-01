@@ -1,22 +1,49 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
+import {WebView} from 'react-native-webview';
 import moment from 'moment';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncImage from '../../components/AsyncImage';
-import {ScrollView} from 'react-native-gesture-handler';
+import MyStars from '../../components/MyStars';
+import {BASE_VIDEO_URL} from 'react-native-dotenv';
 
 const MovieDetail = () => {
+  const genresSection = () => {
+    if (movie.genres && _.isArray(movie.genres) && movie.genres.length > 0) {
+      return (
+        <Text style={styles.textColor}>
+          <Text style={styles.title}>Genres:</Text> {movie.genres[0].name}
+        </Text>
+      );
+    }
+  };
+
+  const movieTitleSection = () => {
+    return (
+      <Text style={[styles.movieName, styles.textColor]}>
+        {`${movie.title}`}
+        <Text style={{fontSize: 22}}>{` (${moment(
+          movie.release_date,
+        ).year()})`}</Text>
+      </Text>
+    );
+  };
+
   return (
     <ImageBackground
       source={{
         uri: 'https://image.tmdb.org/t/p/w92/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
       }}
-      style={{
-        width: '100%',
-        height: '100%',
-      }}
+      style={styles.imgBackground}
       blurRadius={20}>
-      <ScrollView contentContainerStyle={{width: '100%', height: '100%'}}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={[styles.overlay, styles.movieDetail]}>
           <View style={styles.head}>
             <View style={styles.posterImage}>
@@ -26,17 +53,15 @@ const MovieDetail = () => {
                   uri:
                     'https://image.tmdb.org/t/p/original/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
                 }}
+                placeholderSource={{
+                  uri:
+                    'https://image.tmdb.org/t/p/w92/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
+                }}
               />
             </View>
+
             <View style={styles.headDetail}>
-              {movie.genres &&
-                _.isArray(movie.genres) &&
-                movie.genres.length > 0 && (
-                  <Text style={styles.textColor}>
-                    <Text style={styles.title}>Genres:</Text>{' '}
-                    {movie.genres[0].name}
-                  </Text>
-                )}
+              {genresSection()}
               <Text style={styles.textColor}>
                 <Text style={styles.title}>Runtime:</Text>{' '}
                 {`${movie.runtime} minutes`}
@@ -44,6 +69,39 @@ const MovieDetail = () => {
               <Text style={styles.textColor}>
                 <Text style={styles.title}>Release date:</Text>{' '}
                 {moment(movie.release_date).format('LL')}
+              </Text>
+              <MyStars
+                containerStyle={styles.rating}
+                percent={30}
+                starSize={70}
+              />
+            </View>
+          </View>
+
+          <View style={styles.movieNameSection}>
+            {movieTitleSection()}
+            <View style={styles.favoriteBox}>
+              <Icon style={styles.favoriteIcon} name="heart" size={35} />
+            </View>
+          </View>
+          <View style={styles.body}>
+            <View style={[styles.bodySection]}>
+              <WebView
+                mediaPlaybackRequiresUserAction={true}
+                source={{
+                  uri: 'https://www.youtube.com/embed/uXvdoj3wvbM',
+                }}
+                style={{marginTop: 20, width: '100%', height: 250}}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+              />
+            </View>
+            <View style={styles.bodySection}>
+              <Text style={[styles.textColor, styles.title, styles.bodyTitle]}>
+                Overview
+              </Text>
+              <Text style={[styles.text, styles.textColor]}>
+                {movie.overview}
               </Text>
             </View>
           </View>
@@ -54,6 +112,14 @@ const MovieDetail = () => {
 };
 
 const styles = StyleSheet.create({
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+  },
+  scrollView: {
+    width: '100%',
+    // height: '100%',
+  },
   movieDetail: {
     // flex: 1,
     width: '100%',
@@ -68,18 +134,54 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
   },
-  posterImage: {
-    // width: '40%',
-  },
+  posterImage: {},
   headDetail: {
     flex: 1,
     marginLeft: 20,
   },
+  movieNameSection: {
+    flexDirection: 'row',
+    paddingTop: 20,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  favoriteBox: {
+    width: '10%',
+    minWidth: 50,
+  },
+  favoriteIcon: {
+    color: 'grey',
+  },
+  movieName: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    flex: 1,
+    marginRight: 20,
+  },
+  body: {
+    // marginTop: 10,
+  },
+  bodySection: {
+    marginTop: 25,
+    width: '100%',
+    flexDirection: 'column',
+  },
+  bodyTitle: {
+    marginBottom: 10,
+  },
   title: {
     fontWeight: '700',
+    fontSize: 16,
+  },
+  text: {
+    fontSize: 14,
   },
   textColor: {
     color: '#fff',
+  },
+  rating: {
+    marginTop: 15,
   },
 });
 
