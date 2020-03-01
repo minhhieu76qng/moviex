@@ -1,25 +1,36 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {BASE_IMG_URL} from 'react-native-dotenv';
 import ScreenName from '../constance/ScreenName';
+import AsyncImage from './AsyncImage';
 
 const MovieItem = ({movie}) => {
   const navigation = useNavigation();
+  const route = useRoute();
 
   const gotoDetail = () => {
-    navigation.navigate(ScreenName.Detail, {movieId: movie.item.id});
+    navigation.navigate(ScreenName.Detail, {
+      movieId: movie.item.id,
+      stack: {
+        from: route.name,
+      },
+    });
   };
 
   return (
     <TouchableOpacity onPress={() => gotoDetail()}>
       <View style={styles.movieItem}>
         <View style={styles.moviePoster}>
-          <Image
+          <AsyncImage
+            width={100}
+            source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
+          />
+          {/* <Image
             style={styles.movieThumbnail}
             source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
             resizeMode="cover"
-          />
+          /> */}
         </View>
         <View style={styles.movieContent}>
           <Text style={[styles.textColor, styles.movieName]}>
@@ -51,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   moviePoster: {
-    width: '30%',
+    // width: '30%',
     shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 0},

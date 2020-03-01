@@ -8,8 +8,14 @@ const TopRatedStack = createStackNavigator();
 
 function TopRatedStackScreen() {
   return (
-    <TopRatedStack.Navigator headerMode="none">
-      <TopRatedStack.Screen name={ScreenName.TopRated} component={TopRated} />
+    <TopRatedStack.Navigator headerMode="float">
+      <TopRatedStack.Screen
+        name={ScreenName.TopRated}
+        component={TopRated}
+        options={{
+          headerShown: false,
+        }}
+      />
       <TopRatedStack.Screen name={ScreenName.Detail} component={MovieDetail} />
     </TopRatedStack.Navigator>
   );

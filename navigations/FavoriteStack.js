@@ -8,8 +8,14 @@ const FavoriteStack = createStackNavigator();
 
 function FavoriteStackScreen() {
   return (
-    <FavoriteStack.Navigator headerMode="none">
-      <FavoriteStack.Screen name={ScreenName.Favorite} component={Favorite} />
+    <FavoriteStack.Navigator headerMode="float">
+      <FavoriteStack.Screen
+        name={ScreenName.Favorite}
+        component={Favorite}
+        options={{
+          headerShown: false,
+        }}
+      />
       <FavoriteStack.Screen name={ScreenName.Detail} component={MovieDetail} />
     </FavoriteStack.Navigator>
   );

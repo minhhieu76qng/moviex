@@ -12,6 +12,9 @@ function NowPlayingStackScreen() {
       <NowPlayingStack.Screen
         name={ScreenName.NowPlaying}
         component={NowPlaying}
+        options={{
+          headerShown: false,
+        }}
       />
       <NowPlayingStack.Screen
         name={ScreenName.Detail}
