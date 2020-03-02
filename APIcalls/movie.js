@@ -21,6 +21,7 @@ export async function getMovieDetail(movieId) {
       release_date: data.release_date,
       runtime: data.runtime,
       title: data.title,
+      vote_average: data.vote_average,
       videos:
         data.videos && _.isArray(data.videos.results)
           ? data.videos.results
