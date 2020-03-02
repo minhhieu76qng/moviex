@@ -19,10 +19,6 @@ const MovieItem = React.memo(
       });
     }
 
-    if (movie.item.title === 'Sonic the Hedgehog') {
-      console.log(movie.item.id);
-    }
-
     return (
       <TouchableOpacity onPress={() => gotoDetail()}>
         <View style={styles.movieItem}>
@@ -72,6 +68,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 10,
     padding: 3,
+    height: 150,
+    overflow: 'hidden',
   },
   movieContent: {
     marginLeft: 20,

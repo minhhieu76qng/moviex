@@ -7,11 +7,14 @@ import {
   Animated,
   ActivityIndicator,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AsyncImage = ({source, placeholderSource, width}) => {
   const [loaded, setLoaded] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
+
+  const [noOrgImg, setNoOrgImg] = useState(false);
 
   const [imageOpacity] = useState(
     placeholderSource ? new Animated.Value(1.0) : new Animated.Value(0.0),
@@ -71,8 +74,9 @@ const AsyncImage = ({source, placeholderSource, width}) => {
         setImgWidth(width);
         setImgHeight((width / w) * h);
       },
-      err => {
-        throw err;
+      () => {
+        setLoaded(true);
+        setNoOrgImg(true);
       },
     );
   }, [source.uri, width]);
@@ -106,20 +110,30 @@ const AsyncImage = ({source, placeholderSource, width}) => {
 
   return (
     <View style={styles.imageWrapper}>
-      <Animated.Image style={imgStyle} source={source} onLoad={onLoad} />
-      {!placeholderSource && !loaded && (
-        <Animated.View style={placeholderStyle}>
-          {/* <Icon style={styles.icon} size={50} name="film" color="#fff" /> */}
-          <ActivityIndicator size="large" />
-        </Animated.View>
+      {!noOrgImg && (
+        <>
+          <Animated.Image style={imgStyle} source={source} onLoad={onLoad} />
+          {!placeholderSource && !loaded && (
+            <Animated.View style={placeholderStyle}>
+              {/* <Icon style={styles.icon} size={50} name="film" color="#fff" /> */}
+              <ActivityIndicator size="large" />
+            </Animated.View>
+          )}
+
+          {placeholderSource && !loaded && (
+            <Animated.Image
+              blurRadius={20}
+              style={phImageStyle}
+              source={placeholderSource}
+            />
+          )}
+        </>
       )}
 
-      {placeholderSource && !loaded && (
-        <Animated.Image
-          blurRadius={20}
-          style={phImageStyle}
-          source={placeholderSource}
-        />
+      {noOrgImg && (
+        <View style={[placeholderStyle, {opacity: 1}]}>
+          <Icon style={styles.icon} size={50} name="film" color="#fff" />
+        </View>
       )}
     </View>
   );
