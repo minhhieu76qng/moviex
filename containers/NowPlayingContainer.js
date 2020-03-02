@@ -11,10 +11,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    refreshNowPlaying: () => {
+    refreshScreen: () => {
       dispatch(refreshNowPlaying());
     },
-    getMoreNowPlaying: () => {
+    loadMore: () => {
       dispatch(getMoreNowPlaying());
     },
   };

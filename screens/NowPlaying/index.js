@@ -3,20 +3,25 @@ import {View, StyleSheet} from 'react-native';
 import ListMovie from '../../components/ListMovie';
 import SearchBar from '../../components/SearchBar';
 
-const NowPlaying = ({movies, loading, refreshNowPlaying}) => {
+const NowPlaying = ({movies, loading, refreshScreen, loadMore}) => {
   const onRefresh = () => {
-    refreshNowPlaying();
+    refreshScreen();
   };
 
   useEffect(() => {
-    refreshNowPlaying();
-  }, [refreshNowPlaying]);
+    refreshScreen();
+  }, [refreshScreen]);
 
   return (
     <View style={styles.homeWrapper}>
       <SearchBar />
       <View style={styles.list}>
-        <ListMovie movies={movies} refreshing={loading} onRefresh={onRefresh} />
+        <ListMovie
+          movies={movies}
+          refreshing={loading}
+          onRefresh={onRefresh}
+          loadMore={loadMore}
+        />
       </View>
     </View>
   );
@@ -30,6 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingTop: 15,
   },
+
   list: {
     marginTop: 20,
     flex: 1,

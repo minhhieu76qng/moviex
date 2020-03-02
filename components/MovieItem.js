@@ -1,55 +1,62 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {BASE_IMG_URL} from 'react-native-dotenv';
 import ScreenName from '../constance/ScreenName';
 import AsyncImage from './AsyncImage';
 
-const MovieItem = ({movie}) => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const MovieItem = React.memo(
+  ({movie}) => {
+    const navigation = useNavigation();
+    const route = useRoute();
 
-  const gotoDetail = () => {
-    navigation.navigate(ScreenName.Detail, {
-      movieId: movie.item.id,
-      stack: {
-        from: route.name,
-      },
-    });
-  };
+    function gotoDetail() {
+      navigation.navigate(ScreenName.Detail, {
+        movieId: movie.item.id,
+        stack: {
+          from: route.name,
+        },
+      });
+    }
 
-  return (
-    <TouchableOpacity onPress={() => gotoDetail()}>
-      <View style={styles.movieItem}>
-        <View style={styles.moviePoster}>
-          <AsyncImage
-            width={100}
-            source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
-          />
-          {/* <Image
-            style={styles.movieThumbnail}
-            source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
-            resizeMode="cover"
-          /> */}
+    if (movie.item.title === 'Sonic the Hedgehog') {
+      console.log(movie.item.id);
+    }
+
+    return (
+      <TouchableOpacity onPress={() => gotoDetail()}>
+        <View style={styles.movieItem}>
+          <View style={styles.moviePoster}>
+            <AsyncImage
+              width={100}
+              source={{uri: `${BASE_IMG_URL}/w92${movie.item.poster_path}`}}
+            />
+          </View>
+          <View style={styles.movieContent}>
+            <Text style={[styles.textColor, styles.movieName]}>
+              {movie.item.title}
+            </Text>
+            <Text style={[styles.textColor, styles.releaseDate]}>
+              {movie.item.release_date}
+            </Text>
+            <Text
+              style={[styles.textColor, styles.movieDescription]}
+              ellipsizeMode="tail"
+              numberOfLines={3}>
+              {movie.item.overview}
+            </Text>
+          </View>
         </View>
-        <View style={styles.movieContent}>
-          <Text style={[styles.textColor, styles.movieName]}>
-            {movie.item.title}
-          </Text>
-          <Text style={[styles.textColor, styles.releaseDate]}>
-            {movie.item.release_date}
-          </Text>
-          <Text
-            style={[styles.textColor, styles.movieDescription]}
-            ellipsizeMode="tail"
-            numberOfLines={3}>
-            {movie.item.overview}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
+      </TouchableOpacity>
+    );
+  },
+  (prevProps, nextProps) => {
+    if (prevProps.movie.item.id === nextProps.movie.item.id) {
+      return true;
+    }
+    return false;
+  },
+);
 
 const styles = StyleSheet.create({
   movieItem: {
@@ -57,12 +64,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    // minHeight: 150,
-    // padding: 15,
     flexDirection: 'row',
   },
   moviePoster: {
-    // width: '30%',
     shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 0},

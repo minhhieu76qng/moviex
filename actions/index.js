@@ -34,6 +34,7 @@ async function loadNowPlaying(page) {
 export function refreshNowPlaying() {
   return async dispatch => {
     dispatch(setLoading(true));
+    dispatch(setNowPlaying([], 0, 0));
 
     try {
       const result = await loadNowPlaying(1);
@@ -62,12 +63,12 @@ export function getMoreNowPlaying() {
         const result = await loadNowPlaying(current + 1);
         dispatch(
           setNowPlaying(
-            Array.from([]).concat(movies, result.movies),
+            movies.concat(result.movies),
             result.current,
             result.pages,
           ),
         );
-        dispatch(setLoading(true));
+        dispatch(setLoading(false));
       }
     } catch (err) {
       throw err;

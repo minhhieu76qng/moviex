@@ -1,8 +1,22 @@
 import React from 'react';
-import {FlatList, View, RefreshControl} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+} from 'react-native';
 import MovieItem from './MovieItem';
 
-const ListMovie = ({movies, refreshing, onRefresh}) => {
+const ListMovie = ({movies, refreshing, onRefresh, loadMore}) => {
+  if (refreshing && !(movies && movies.length > 0)) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={movies}
@@ -11,8 +25,19 @@ const ListMovie = ({movies, refreshing, onRefresh}) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.5}
+      initialNumToRender={4}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+});
 
 export default ListMovie;
