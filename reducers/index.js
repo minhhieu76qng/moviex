@@ -4,6 +4,8 @@ import {
   SET_FINDING_MOVIES,
   SET_NOWPLAYING_LOADING,
   SET_SEARCH_LOADING,
+  SET_TOPRATED_LOADING,
+  SET_TOPRATED,
 } from '../actions';
 
 const initialState = {
@@ -40,6 +42,21 @@ export default function(state = initialState, action) {
         ...state,
         nowPlaying: {
           ...state.nowPlaying,
+          movies: action.movies,
+          current: action.current,
+          pages: action.pages,
+        },
+      };
+    case SET_TOPRATED_LOADING:
+      return {
+        ...state,
+        topRated: {...state.topRated, loading: action.status},
+      };
+    case SET_TOPRATED:
+      return {
+        ...state,
+        topRated: {
+          ...state.topRated,
           movies: action.movies,
           current: action.current,
           pages: action.pages,

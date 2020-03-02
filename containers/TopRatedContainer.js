@@ -1,21 +1,21 @@
 import {connect} from 'react-redux';
-import {refreshNowPlaying, getMoreNowPlaying} from '../actions';
 import ListMovieScreen from '../screens/ListMovieScreen';
+import {refreshTopRated, getMoreTopRated} from '../actions';
 
 const mapStateToProps = state => {
   return {
-    loading: state.nowPlaying.loading,
-    movies: state.nowPlaying.movies,
+    loading: state.topRated.loading,
+    movies: state.topRated.movies,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     refreshScreen: () => {
-      dispatch(refreshNowPlaying());
+      dispatch(refreshTopRated());
     },
     loadMore: () => {
-      dispatch(getMoreNowPlaying());
+      dispatch(getMoreTopRated());
     },
   };
 };

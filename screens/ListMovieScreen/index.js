@@ -4,7 +4,7 @@ import ListMovie from '../../components/ListMovie';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ScreenName from '../../constance/ScreenName';
 
-const NowPlaying = ({
+const ListMovieScreen = ({
   navigation,
   route,
   movies,
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NowPlaying;
+export default ListMovieScreen;

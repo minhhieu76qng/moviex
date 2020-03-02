@@ -82,7 +82,79 @@ export function getMoreNowPlaying() {
   };
 }
 
-// --------------------- SEARCHING ----------------
+// --------------------- TOP_RATED -----------------
+function setTopRatedLoading(status) {
+  return {type: SET_TOPRATED_LOADING, status};
+}
+
+function setTopRated(movies, current, pages) {
+  return {type: SET_TOPRATED, movies, current, pages};
+}
+
+async function loadTopRated(page) {
+  const response = await Axios.get('/movie/top_rated', {
+    params: {
+      page,
+    },
+  });
+
+  if (!(response && response.data)) {
+    return null;
+  }
+
+  return {
+    movies: response.data.results,
+    current: response.data.page,
+    pages: response.data.total_pages,
+  };
+}
+
+export function refreshTopRated() {
+  return async dispatch => {
+    dispatch(setTopRatedLoading(true));
+    dispatch(setTopRated([], 0, 0));
+
+    try {
+      const result = await loadTopRated(1);
+
+      dispatch(setTopRated(result.movies, result.current, result.pages));
+      dispatch(setTopRatedLoading(false));
+    } catch (err) {
+      throw err;
+    }
+  };
+}
+
+export function getMoreTopRated() {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      if (!state) {
+        return;
+      }
+
+      const {current, pages, movies} = state.topRated;
+
+      if (current > 0 && current < pages) {
+        dispatch(setTopRatedLoading(true));
+
+        const result = await loadTopRated(current + 1);
+        dispatch(
+          setTopRated(
+            movies.concat(result.movies),
+            result.current,
+            result.pages,
+          ),
+        );
+        dispatch(setTopRatedLoading(false));
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+}
+
+// --------------------- SEARCHING -----------------
 function setSearchLoading(status) {
   return {type: SET_SEARCH_LOADING, status};
 }

@@ -8,9 +8,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ScreenName from './constance/ScreenName';
 import MovieDetail from './screens/DetailScreen';
 import NowPlayingContainer from './containers/NowPlayingContainer';
-import TopRated from './screens/TopRated';
 import Favorite from './screens/Favorite';
 import SearchContainer from './containers/SearchContainer';
+import TopRatedContainer from './containers/TopRatedContainer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,7 +43,7 @@ const MyTab = () => {
         name={ScreenName.NowPlaying}
         component={NowPlayingContainer}
       />
-      <Tab.Screen name={ScreenName.TopRated} component={TopRated} />
+      <Tab.Screen name={ScreenName.TopRated} component={TopRatedContainer} />
       <Tab.Screen name={ScreenName.Favorite} component={Favorite} />
     </Tab.Navigator>
   );
