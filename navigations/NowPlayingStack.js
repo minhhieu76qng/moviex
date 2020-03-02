@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import ScreenName from '../constance/ScreenName';
-import NowPlaying from '../screens/NowPlaying';
 import MovieDetail from '../screens/DetailScreen';
+import NowPlayingContainer from '../containers/NowPlayingContainer';
 
 const NowPlayingStack = createStackNavigator();
 
@@ -11,7 +11,7 @@ function NowPlayingStackScreen() {
     <NowPlayingStack.Navigator headerMode="none">
       <NowPlayingStack.Screen
         name={ScreenName.NowPlaying}
-        component={NowPlaying}
+        component={NowPlayingContainer}
         options={{
           headerShown: false,
         }}
