@@ -56,8 +56,6 @@ export function getMoreNowPlaying() {
 
       const {current, pages, movies} = state.nowPlaying;
 
-      console.log(current, pages);
-
       if (current > 0 && current < pages) {
         dispatch(setLoading(true));
 

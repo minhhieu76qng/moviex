@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import PropType from 'prop-types';
-import {View, Image, StyleSheet, Animated} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Animated,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AsyncImage = ({source, placeholderSource, width}) => {
@@ -85,20 +92,22 @@ const AsyncImage = ({source, placeholderSource, width}) => {
   };
 
   const phImageStyle = {
+    position: 'relative',
     resizeMode: 'cover',
     opacity: placeholderOpacity,
-    width: imgWidth,
+    width: width,
     height: imgHeight,
   };
 
   const placeholderStyle = {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    transform: [{scale: placeholderScale}],
+    // transform: [{scale: placeholderScale}],
     opacity: placeholderOpacity,
-    width: imgWidth,
+    width: width,
     height: imgHeight,
+    minHeight: 100,
   };
 
   return (
@@ -106,8 +115,8 @@ const AsyncImage = ({source, placeholderSource, width}) => {
       <Animated.Image style={imgStyle} source={source} onLoad={onLoad} />
       {!placeholderSource && !loaded && (
         <Animated.View style={placeholderStyle}>
-          <Icon style={styles.icon} name="film" color="#fff" />
-          {/* <ActivityIndicator size="large" /> */}
+          {/* <Icon style={styles.icon} size={50} name="film" color="#fff" /> */}
+          <ActivityIndicator size="large" />
         </Animated.View>
       )}
 

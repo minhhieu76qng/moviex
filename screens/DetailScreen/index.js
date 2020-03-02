@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ImageBackground,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import moment from 'moment';
@@ -12,9 +13,24 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncImage from '../../components/AsyncImage';
 import MyStars from '../../components/MyStars';
-import {BASE_VIDEO_URL} from 'react-native-dotenv';
+import {BASE_VIDEO_URL, BASE_IMG_URL} from 'react-native-dotenv';
+import {getMovieDetail} from '../../APIcalls/movie';
 
-const MovieDetail = () => {
+const MovieDetail = ({route}) => {
+  const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState(null);
+
+  useEffect(() => {
+    (async function() {
+      setLoading(true);
+
+      const ret = await getMovieDetail(route.params.movieId);
+
+      setMovie(ret);
+      setLoading(false);
+    })();
+  }, [route.params.movieId]);
+
   const genresSection = () => {
     if (movie.genres && _.isArray(movie.genres) && movie.genres.length > 0) {
       return (
@@ -36,10 +52,26 @@ const MovieDetail = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingFilm}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!loading && !movie) {
+    return (
+      <View>
+        <Text>Not found</Text>
+      </View>
+    );
+  }
+
   return (
     <ImageBackground
       source={{
-        uri: 'https://image.tmdb.org/t/p/w92/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
+        uri: `${BASE_IMG_URL}/w92${movie.backdrop_path}`,
       }}
       style={styles.imgBackground}
       blurRadius={20}>
@@ -50,12 +82,10 @@ const MovieDetail = () => {
               <AsyncImage
                 width={150}
                 source={{
-                  uri:
-                    'https://image.tmdb.org/t/p/original/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
+                  uri: `${BASE_IMG_URL}/original${movie.poster_path}`,
                 }}
                 placeholderSource={{
-                  uri:
-                    'https://image.tmdb.org/t/p/w92/aAmfIX3TT40zUHGcCKrlOZRKC7u.jpg',
+                  uri: `${BASE_IMG_URL}/w92${movie.poster_path}`,
                 }}
               />
             </View>
@@ -112,6 +142,12 @@ const MovieDetail = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingFilm: {
+    backgroundColor: '#3d3d3d',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   imgBackground: {
     width: '100%',
     height: '100%',
