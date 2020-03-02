@@ -15,6 +15,7 @@ import AsyncImage from '../../components/AsyncImage';
 import MyStars from '../../components/MyStars';
 import {BASE_VIDEO_URL, BASE_IMG_URL} from 'react-native-dotenv';
 import {getMovieDetail} from '../../APIcalls/movie';
+import Header from './Header';
 
 const MovieDetail = ({route}) => {
   const [loading, setLoading] = useState(true);
@@ -42,10 +43,11 @@ const MovieDetail = ({route}) => {
   };
 
   const movieTitleSection = () => {
+    const yearStyle = {fontSize: 22};
     return (
       <Text style={[styles.movieName, styles.textColor]}>
         {`${movie.title}`}
-        <Text style={{fontSize: 22}}>{` (${moment(
+        <Text style={yearStyle}>{` (${moment(
           movie.release_date,
         ).year()})`}</Text>
       </Text>
@@ -96,6 +98,7 @@ const MovieDetail = ({route}) => {
       }}
       style={styles.imgBackground}
       blurRadius={10}>
+      <Header />
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={[styles.overlay, styles.movieDetail]}>
           <View style={styles.head}>

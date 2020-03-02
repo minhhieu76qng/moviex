@@ -5,25 +5,19 @@ import {
   Image,
   StyleSheet,
   Animated,
-  Text,
   ActivityIndicator,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AsyncImage = ({source, placeholderSource, width}) => {
   const [loaded, setLoaded] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
 
-  const [imageOpacity, setImageOpacity] = useState(
+  const [imageOpacity] = useState(
     placeholderSource ? new Animated.Value(1.0) : new Animated.Value(0.0),
   );
-  const [placeholderOpacity, setPlaceholderOpacity] = useState(
-    new Animated.Value(1.0),
-  );
-  const [placeholderScale, setPlaceholderScale] = useState(
-    new Animated.Value(1.0),
-  );
+  const [placeholderOpacity] = useState(new Animated.Value(1.0));
+  const [placeholderScale] = useState(new Animated.Value(1.0));
 
   const onLoad = () => {
     Animated.sequence([
