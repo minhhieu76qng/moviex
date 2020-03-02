@@ -12,6 +12,7 @@ const mapStateToProps = state => {
   return {
     movies: state.search.movies,
     loading: state.search.loading,
+    text: state.search.text,
   };
 };
 
