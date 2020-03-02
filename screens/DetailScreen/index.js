@@ -15,7 +15,7 @@ import AsyncImage from '../../components/AsyncImage';
 import MyStars from '../../components/MyStars';
 import {BASE_VIDEO_URL, BASE_IMG_URL} from 'react-native-dotenv';
 import {getMovieDetail} from '../../APIcalls/movie';
-import Header from './Header';
+import Header from '../../components/Header';
 
 const MovieDetail = ({route}) => {
   const [loading, setLoading] = useState(true);

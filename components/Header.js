@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DetailHeader = () => {
   const navigation = useNavigation();

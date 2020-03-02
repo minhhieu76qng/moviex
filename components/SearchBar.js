@@ -1,8 +1,9 @@
 import React, {useState, createRef, useEffect} from 'react';
-import {View, TextInput, StyleSheet, Keyboard, Text} from 'react-native';
+import {View, TextInput, StyleSheet, Keyboard, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import _ from 'lodash';
 
-const SearchBar = () => {
+const SearchBar = ({onSearch}) => {
   const [value, setValue] = useState('');
 
   const inputRef = createRef();
@@ -11,7 +12,9 @@ const SearchBar = () => {
     const keyboardHiddenListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        inputRef.current.blur();
+        if (inputRef && inputRef.current) {
+          inputRef.current.blur();
+        }
       },
     );
     return () => {
@@ -27,6 +30,14 @@ const SearchBar = () => {
     setValue('');
   };
 
+  const handleSearch = () => {
+    if (!(value && _.isString(value) && value.trim().length > 0)) {
+      return Alert.alert('Error', 'You must enter text to search.');
+    }
+
+    return onSearch(value);
+  };
+
   const showStyle = {
     opacity: value.length > 0 ? 1 : 0,
   };
@@ -38,7 +49,7 @@ const SearchBar = () => {
         style={styles.searchBar}
         placeholder="Search..."
         placeholderTextColor="#c8d6e5"
-        onSubmitEditing={() => console.log('submit')}
+        onSubmitEditing={handleSearch}
         value={value}
         onChangeText={handleChange}
         ref={inputRef}

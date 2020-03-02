@@ -4,7 +4,7 @@ import NowPlaying from '../screens/NowPlaying';
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading,
+    loading: state.nowPlaying.loading,
     movies: state.nowPlaying.movies,
   };
 };

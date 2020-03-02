@@ -3,4 +3,5 @@ export default {
   TopRated: 'Top rated',
   Favorite: 'Favorite',
   Detail: 'Detail',
+  Search: 'Search',
 };
